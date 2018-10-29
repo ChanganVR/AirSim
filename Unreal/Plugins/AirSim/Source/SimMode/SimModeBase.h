@@ -139,6 +139,8 @@ private:
     bool lidar_checks_done_ = false; 
     bool lidar_draw_debug_points_ = false;
 
+	AActor* spawner_;
+
 private:
     void setStencilIDs();
     void setupTimeOfDay();

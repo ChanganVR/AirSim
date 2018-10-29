@@ -77,6 +77,17 @@ void ASimModeBase::BeginPlay()
     UAirBlueprintLib::LogMessage(TEXT("Press F1 to see help"), TEXT(""), LogDebugLevel::Informational);
 
     setupVehiclesAndCamera();
+
+	// set up spawner
+	for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		if (ActorItr->GetName().Contains(FString("Spawner")))
+		{
+			//UE_LOG(LogTemp, Display, TEXT("Find Spawner actor"));
+			//GEngine->AddOnScreenDebugMessage(-1, 10.0, FColor::Yellow, FString::FString("FOUND IT!!!!"));
+			spawner_ = *ActorItr;
+		}
+	}
 }
 
 const NedTransform& ASimModeBase::getGlobalNedTransform()
@@ -270,6 +281,8 @@ void ASimModeBase::advanceTimeOfDay()
 
 void ASimModeBase::reset()
 {
+	spawner_->Reset();
+
     //default implementation
     UAirBlueprintLib::RunCommandOnGameThread([this]() {
         for (auto& api : getApiProvider()->getVehicleSimApis()) {
